@@ -67,7 +67,8 @@ void drawExistingBalls(Ball balls[], int ballNum){
         DrawCircleV(balls[i].pos, balls[i].radius, balls[i].colour);
         if(i > 0){
             //drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
-            DrawLineEx(balls[i-1].pos, balls[i].pos, 2, BLUE);
+            //DrawLineEx(balls[i-1].pos, balls[i].pos, 1, GRAY);
+            drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
             drawBezier(balls, ballNum);
         }
     }
