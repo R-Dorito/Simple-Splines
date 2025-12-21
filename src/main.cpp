@@ -46,17 +46,17 @@ Vector2 getBezierValues(Ball balls[], int n, float t){
         resultX += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * balls[i].pos.x;
         resultY += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * balls[i].pos.y;
     }
-    
-
     return {resultX, resultY};
 }
 
 void drawBezier(Ball balls[], int ballCount){
     Vector2 point = {0,0};
+    Vector2 previousPoint = {balls[0].pos.x,balls[0].pos.y};
     
     for (float t = 0; t < 1.0f; t += 0.01f){
         point = getBezierValues(balls, ballCount, t);
-        DrawCircleV(point, 2, RED); 
+        DrawLineEx(previousPoint, point, 5, RED); 
+        previousPoint = point;
     }
 }
 
@@ -118,7 +118,7 @@ int main(void)
 
             //below is the current ball location
             DrawCircleV(ballPosition, startBallRadius, LIME);
-            DrawText(TextFormat("X: %f, Y: %f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
+            DrawText(TextFormat("X: %i, Y: %i",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
 
         EndDrawing();
 
