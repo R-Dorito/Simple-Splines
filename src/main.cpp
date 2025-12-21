@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include <iostream>
+#include <cmath> 
 
 #define MAX_BALLS 5000
 
@@ -10,28 +11,64 @@ typedef struct  Ball {
 } Ball;
 
 void drawLinearInterprolation(Vector2 v1, Vector2 v2){
-    
-    float pointY;
-    for (float i = v1.x; i <= v2.x; i += 0.1f)
+
+    //float pointY;
+    for (float i = 0; i < 1; i += 0.01f)
     {
-        pointY = v1.y + (i - v1.x) * (v2.y - v1.y)/(v2.x - v1.x);
+        float x = v1.x + i * (v2.x - v1.x); //Interpolation Formula
+        float y = v1.y + i * (v2.y - v1.y);
         
-        DrawLine(v1.x + i, pointY, v2.x, v2.y, BLACK);
-        std::cout << "v1.x " << v1.x << " v1.y " << v1.y << std::endl;
-        std::cout << " v2.x " << v2.x << " v2.y " << v2.y << std::endl;
+        DrawPixel((int)x, (int)y, RED);
+    }
+}
+
+float powerOf(float base, int n){
+    float ans = 1;
+    for(int i = 0; i < n; i++){
+        ans *= base;
+    }
+    return ans;
+}
+
+void drawBezier(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4){
+    float pointX;
+    float pointY;
+    for (float t = 0; t < 1.0f; t += 0.005f){
+        // pointX = 
+        //     powerOf((1 - t),3) * p1.x +
+        //     3 * t * powerOf((1-t),2) * p2.x +
+        //     3 * powerOf(t,2) * (1-t) * p3.x +
+        //     powerOf(t,4);
+
+        // pointY = 
+        //     powerOf((1 - t),3) * p1.y +
+        //     3 * t * powerOf((1-t),2) * p2.y +
+        //     3 * powerOf(t,2) * (1-t) * p3.y +
+        //     powerOf(t,4);
+
+        pointX = (1 - t) * (1 - t) * (1 - t) * p1.x 
+            + 3 * (1 - t) * (1 - t) * t * p2.x 
+            + 3 * (1 - t) * t * t * p3.x 
+            + t * t * t * p4.x;
+        pointY = (1 - t) * (1 - t) * (1 - t) * p1.y 
+            + 3 * (1 - t) * (1 - t) * t * p2.y 
+            + 3 * (1 - t) * t * t * p3.y 
+            + t * t * t * p4.y;
+        DrawPixel((int)pointX, (int)pointY, BLACK);   
     }
 }
 
 void drawExistingBalls(Ball balls[], int ballNum){
     for (int i = 0; i < ballNum; i++)
     {
-        if(i > 0)
+        if((ballNum) % 4 == 0)
         {
-            //DrawLineV(balls[i-1].pos, balls[i].pos, BLACK);
-            //std::cout << "ball first " << i-1 << " and second " << i << std::endl;
-            drawLinearInterprolation(balls[i-1].pos, balls[i].pos);        
+            drawBezier(balls[0].pos, balls[1].pos, balls[2].pos, balls[3].pos);
         }
         DrawCircleV(balls[i].pos, balls[i].radius, balls[i].colour);
+        if(i > 0){
+            drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
+        }
     }
 }
 
