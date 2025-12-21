@@ -32,17 +32,20 @@ void drawLinearInterprolation(Vector2 v1, Vector2 v2){
     }
 }
 
-Vector2 calcsTest(Ball balls[], int n, float t){
+Vector2 getBezierValues(Ball balls[], int n, float t){
     float resultX = 0.0f;
     float resultY = 0.0f;
     int ballNum = 0;
-    for(int i = 0; i < n; i++){
-        resultX += binomials(n,i) * (float)pow(t,i) * (float)pow((1-t),(n-1)) * balls[ballNum].pos.x;
-        resultY += binomials(n,i) * (float)pow(t,i) * (float)pow((1-t),(n-1)) * balls[ballNum].pos.y;
+
+    for(int i = 0; i < n - 1; i++){
+        resultX += binomials(n,i) * pow(t,i) * pow((1-t),(n-i))  * balls[ballNum].pos.x;
+        resultY += binomials(n,i) * pow(t,i) * pow((1-t),(n-i))  * balls[ballNum].pos.y;
+        
         ballNum++;
+  
     }
     std::cout << "calcs Test hit result X is " << resultX 
-        << "results Y is " << resultY 
+        << " results Y is " << resultY 
         << " n was " << n
         << " t was " << t
         << std::endl;
@@ -50,12 +53,10 @@ Vector2 calcsTest(Ball balls[], int n, float t){
 }
 
 void drawBezier(Ball balls[], int ballCount){
-    Vector2 point;
-
-    for (float t = 0; t < 1.0f; t += 0.005f){
-        //std::cout << "balls are being drawn" << std::endl;
-        point = calcsTest(balls, ballCount, t);
-        
+    Vector2 point = {0,0};
+    
+    for (float t = 0; t < 1.0f; t += 0.5f){
+        point = getBezierValues(balls, ballCount, t);
         DrawCircleV(point, 2, RED); 
     }
 }
@@ -63,11 +64,12 @@ void drawBezier(Ball balls[], int ballCount){
 void drawExistingBalls(Ball balls[], int ballNum){
     for (int i = 0; i < ballNum; i++)
     {
-        drawBezier(balls, ballNum);
+        DrawText(TextFormat("X: %i, Y: %i",(int)balls[i].pos.x, (int)balls[i].pos.y), balls[i].pos.x - 30, balls[i].pos.y - 20,5, RED);
         DrawCircleV(balls[i].pos, balls[i].radius, balls[i].colour);
         if(i > 0){
             //drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
             DrawLineEx(balls[i-1].pos, balls[i].pos, 2, BLUE);
+            drawBezier(balls, ballNum);
         }
     }
 }
@@ -117,6 +119,7 @@ int main(void)
 
             //below is the current ball location
             DrawCircleV(ballPosition, startBallRadius, LIME);
+            DrawText(TextFormat("X: %f, Y: %f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
 
         EndDrawing();
 
