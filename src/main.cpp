@@ -11,13 +11,18 @@ typedef struct  Ball {
 } Ball;
 
 float factorio(int n){
-    if (n <= 1){return 1;}
+    if (n == 0){return 1;}
     return n * factorio(n - 1);
 }
 
 float binomials(int n, int i){
     //std::cout << "binomials hit" << std::endl;
-    if(i == 0) return 1;
+    if (i > n)
+        return 0;
+  
+  	// base condition when k and n are equal or k = 0
+    if (i == 0 || i == n)
+        return 1;
     return factorio(n) / (factorio(i) * factorio(n-i));
 }
 
@@ -35,27 +40,21 @@ void drawLinearInterprolation(Vector2 v1, Vector2 v2){
 Vector2 getBezierValues(Ball balls[], int n, float t){
     float resultX = 0.0f;
     float resultY = 0.0f;
-    int ballNum = 0;
+    int nt = n-1;
 
-    for(int i = 0; i < n - 1; i++){
-        resultX += binomials(n,i) * pow(t,i) * pow((1-t),(n-i))  * balls[ballNum].pos.x;
-        resultY += binomials(n,i) * pow(t,i) * pow((1-t),(n-i))  * balls[ballNum].pos.y;
-        
-        ballNum++;
-  
+    for(int i = 0; i < n; i++){
+        resultX += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * balls[i].pos.x;
+        resultY += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * balls[i].pos.y;
     }
-    std::cout << "calcs Test hit result X is " << resultX 
-        << " results Y is " << resultY 
-        << " n was " << n
-        << " t was " << t
-        << std::endl;
+    
+
     return {resultX, resultY};
 }
 
 void drawBezier(Ball balls[], int ballCount){
     Vector2 point = {0,0};
     
-    for (float t = 0; t < 1.0f; t += 0.5f){
+    for (float t = 0; t < 1.0f; t += 0.01f){
         point = getBezierValues(balls, ballCount, t);
         DrawCircleV(point, 2, RED); 
     }
