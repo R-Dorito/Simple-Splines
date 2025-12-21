@@ -119,7 +119,7 @@ int main(void)
 
             //below is the current ball location
             DrawCircleV(ballPosition, startBallRadius, LIME);
-            DrawText(TextFormat("X: %i, Y: %i",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
+            DrawText(TextFormat("X: %.0f, Y: %.0f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
 
         EndDrawing();
 
