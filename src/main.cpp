@@ -16,6 +16,8 @@ float factorio(int n){
 }
 
 float binomials(int n, int i){
+    //std::cout << "binomials hit" << std::endl;
+    if(i == 0) return 1;
     return factorio(n) / (factorio(i) * factorio(n-i));
 }
 
@@ -30,42 +32,30 @@ void drawLinearInterprolation(Vector2 v1, Vector2 v2){
     }
 }
 
-float calcsTestX(Ball balls[], int n, int i, int t){
-    float bio = binomials(n,i);
-    float t_Pain = pow(t,i);
-    float i_t = 0.0f;
-
-    if(n > 0){i_t = pow((1-t), n-1);}
-    else {i_t = 1;}
-
-    return bio * t_Pain * i_t * balls[i].pos.x + calcsTestX(balls, n-1, i++, t);
-}
-
-float calcsTestY(Ball balls[], int n, int i, float t){
-    float bio = binomials(n,i);
-    float t_Pain = (float)pow(t,i);
-    float i_t = 0.0f;
-
-    if(n > 0){i_t = (float)pow((1-t), n-1);}
-    else {i_t = 1;}
-
-    return bio * t_Pain * i_t * balls[i].pos.y + calcsTestY(balls, n-1, i++, t);
+Vector2 calcsTest(Ball balls[], int n, float t){
+    float resultX = 0.0f;
+    float resultY = 0.0f;
+    int ballNum = 0;
+    for(int i = 0; i < n; i++){
+        resultX += binomials(n,i) * (float)pow(t,i) * (float)pow((1-t),(n-1)) * balls[ballNum].pos.x;
+        resultY += binomials(n,i) * (float)pow(t,i) * (float)pow((1-t),(n-1)) * balls[ballNum].pos.y;
+        ballNum++;
+    }
+    std::cout << "calcs Test hit result X is " << resultX 
+        << "results Y is " << resultY 
+        << " n was " << n
+        << " t was " << t
+        << std::endl;
+    return {resultX, resultY};
 }
 
 void drawBezier(Ball balls[], int ballCount){
     Vector2 point;
 
     for (float t = 0; t < 1.0f; t += 0.005f){
-        // point.x = (1 - t) * (1 - t) * (1 - t) * p1.x 
-        //     + 3 * (1 - t) * (1 - t) * t * p2.x 
-        //     + 3 * (1 - t) * t * t * p3.x 
-        //     + t * t * t * p4.x;
-        // point.y = (1 - t) * (1 - t) * (1 - t) * p1.y 
-        //     + 3 * (1 - t) * (1 - t) * t * p2.y 
-        //     + 3 * (1 - t) * t * t * p3.y 
-        //     + t * t * t * p4.y;
-        point.x = calcsTestX(balls, ballCount, 0, t);
-        point.y = calcsTestX(balls, ballCount, 0, t);
+        //std::cout << "balls are being drawn" << std::endl;
+        point = calcsTest(balls, ballCount, t);
+        
         DrawCircleV(point, 2, RED); 
     }
 }
@@ -73,10 +63,7 @@ void drawBezier(Ball balls[], int ballCount){
 void drawExistingBalls(Ball balls[], int ballNum){
     for (int i = 0; i < ballNum; i++)
     {
-
-        
         drawBezier(balls, ballNum);
-        
         DrawCircleV(balls[i].pos, balls[i].radius, balls[i].colour);
         if(i > 0){
             //drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
