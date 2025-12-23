@@ -40,10 +40,11 @@ void drawLinearInterprolation(Vector2 v1, Vector2 v2){
 Vector2 bernstein(Ball P[], int n, float t){
     float resultX = 0.0f;
     float resultY = 0.0f;
+    int nt = n-1;
 
     for(int i = 0; i < n; i++){
-        resultX += binomials(n,i) * pow(t,i) * pow((1-t),(n-i)) * P[i].pos.x;
-        resultY += binomials(n,i) * pow(t,i) * pow((1-t),(n-i)) * P[i].pos.y;
+        resultX += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * P[i].pos.x;
+        resultY += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * P[i].pos.y;
     }
     return {resultX, resultY};
 }
@@ -56,25 +57,25 @@ Vector2 deCasteljau(Ball P[], int n, float t){
         Q[i] = P[i].pos; // P for point.
     } 
 
-    for(int i = 0; i < n; i++){ 
+    for(int i = 0; i < n - 1; i++){ 
         // dont forget to check the "- 1", if the point starts at 0,0 or it's flying off somewhere, it's likely a -1 problem
-        for(int j = 0; j < n - i; j++){ 
-            // reduce the number of itterations for each step. SO reduce "i" over time
-            Q[j].x = (Q[j].x * (1-t)) + (Q[j+1].x* t);
+        for(int j = 0; j < n - i - 1; j++){ 
+            // reduce the number of itterations for each step. So reduce "i" over time
+            Q[j].x = (Q[j].x * (1-t)) + (Q[j+1].x * t);
             Q[j].y = (Q[j].y * (1-t)) + (Q[j+1].y * t);
         }
     }
 
-    return {Q[0]};
+    return {Q[0]}; // this is the single point location after reducing all the balls on the 
 }
 
 void drawBezier(Ball balls[], int ballCount){
     Vector2 point = {0,0};
-    Vector2 previousPoint = {balls[0].pos.x,balls[0].pos.y};
+    Vector2 previousPoint = {balls[0].pos.x, balls[0].pos.y};
     
     for (float t = 0; t < 1.0f; t += 0.01f){
         //point = bernstein(balls, ballCount, t);
-        point = deCasteljau(balls, ballCount - 1, t);
+        point = deCasteljau(balls, ballCount, t);
         DrawLineEx(previousPoint, point, 5, RED); 
         previousPoint = point;
     }
