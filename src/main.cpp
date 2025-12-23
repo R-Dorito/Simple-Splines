@@ -37,7 +37,7 @@ void drawLinearInterprolation(Vector2 v1, Vector2 v2){
     }
 }
 
-Vector2 getBezierValues(Ball balls[], int n, float t){
+Vector2 bernstein(Ball balls[], int n, float t){
     float resultX = 0.0f;
     float resultY = 0.0f;
     int nt = n-1;
@@ -49,12 +49,32 @@ Vector2 getBezierValues(Ball balls[], int n, float t){
     return {resultX, resultY};
 }
 
+Vector2 deCasteljau(Ball balls[], int n, float t){
+
+    Vector2 temp[n];
+
+    for (int i = 0; i < n; i++) {
+        temp[i] = balls[i].pos;
+    }
+
+    for(int i = 0; i < n - 1; i++){ 
+        // dont forget to check the "- 1", if the point starts at 0,0 or it's flying off somewhere, it's likely a -1 problem
+        for(int j = 0; j < n - i - 1; j++){
+            temp[j].x = (temp[j].x * (1-t)) + (temp[j+1].x* t);
+            temp[j].y  = (temp[j].y * (1-t)) + (temp[j+1].y * t);
+        }
+    }
+
+    return {temp[0]};
+}
+
 void drawBezier(Ball balls[], int ballCount){
     Vector2 point = {0,0};
     Vector2 previousPoint = {balls[0].pos.x,balls[0].pos.y};
     
     for (float t = 0; t < 1.0f; t += 0.01f){
-        point = getBezierValues(balls, ballCount, t);
+        //point = bernstein(balls, ballCount, t);
+        point = deCasteljau(balls, ballCount, t);
         DrawLineEx(previousPoint, point, 5, RED); 
         previousPoint = point;
     }
