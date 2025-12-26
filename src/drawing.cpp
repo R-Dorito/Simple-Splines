@@ -36,16 +36,16 @@ void drawLinearInterprolation(Vector2 p1, Vector2 p2){
     }
 }
 
-void drawBezier(float t){
+void drawBezier(){
     Vector2 point = {0,0};
     Vector2 previousPoint = {balls[0].pos.x, balls[0].pos.y};
     
-    //for (float t = 0; t < 1.0f + drawingRefreshRate; t += drawingRefreshRate){
+    for (float t = 0; t < 1.0f + drawingRefreshRate; t += drawingRefreshRate){
         //point = bernstein(balls, ballCount, t);
         point = deCasteljau(t);
         DrawLineEx(previousPoint, point, 5, RED); 
         previousPoint = point;
-    //}
+    }
 }
 
 void drawExistingBalls(){
