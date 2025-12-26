@@ -16,20 +16,20 @@ void drawLinearInterprolation(Vector2 p1, Vector2 p2){
     }
 }
 
-void drawBezier(Ball balls[], int n){
+void drawBezier(){
     Vector2 point = {0,0};
     Vector2 previousPoint = {balls[0].pos.x, balls[0].pos.y};
     
     for (float t = 0; t < 1.0f; t += 0.01f){
         //point = bernstein(balls, ballCount, t);
-        point = deCasteljau(balls, n, t);
+        point = deCasteljau(t);
         DrawLineEx(previousPoint, point, 5, RED); 
         previousPoint = point;
     }
 }
 
-void drawExistingBalls(Ball balls[], int n){
-    for (int i = 0; i < n; i++)
+void drawExistingBalls(){
+    for (int i = 0; i < ballNum; i++)
     {
         DrawText(TextFormat("X: %i, Y: %i",(int)balls[i].pos.x, (int)balls[i].pos.y), balls[i].pos.x - 30, balls[i].pos.y - 20,5, RED);
         DrawCircleV(balls[i].pos, balls[i].radius, balls[i].colour);
@@ -37,7 +37,18 @@ void drawExistingBalls(Ball balls[], int n){
             //drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
             //DrawLineEx(balls[i-1].pos, balls[i].pos, 1, GRAY);
             drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
-            drawBezier(balls, n);
+            drawBezier();
         }
     }
+}
+
+void clearScreen(){
+    for (int i = 0; i < ballNum-1; i++) {
+        balls[i] = {
+            {0,0},
+            0.0f,
+            (Color){0, 0, 0, 255}
+        };
+    }
+    ballNum = 0;
 }

@@ -1,21 +1,17 @@
 #include "raylib.h"
 #include "../headers/maths.h"
 #include "../headers/balls.h"
+#include "../headers/drawing.h"
 
 #include <iostream>
 #include <cmath> 
 
-#define MAX_BALLS 5000
-
 const int screenWidth = 800;
 const int screenHeight = 600;
+float startBallRadius = 10;
 
 int main(void)
 {
-    Ball balls[MAX_BALLS]; 
-    int ballNum = 0;    
-    float startBallRadius = 10;
-
     InitWindow(screenWidth, screenHeight, "Raylib 1 - Misc");
     SetTargetFPS(60);    
 
@@ -23,12 +19,6 @@ int main(void)
 
     while (!WindowShouldClose())   
     {
-        if (IsKeyPressed(KEY_H))
-        {
-            if (IsCursorHidden()) {ShowCursor();}
-            else HideCursor();
-        }
-
         ballPosition = GetMousePosition();
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -40,11 +30,15 @@ int main(void)
             };
             ballNum++;
         }    
+
+        if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
+            clearScreen();
+        }
     
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
-            drawExistingBalls(balls, ballNum);
+            drawExistingBalls();
 
             //below is the current ball location
             DrawCircleV(ballPosition, startBallRadius, LIME);
