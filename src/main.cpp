@@ -11,6 +11,8 @@ const int screenHeight = 600;
 Color mouseDrawMode = LIME;
 Color mouseDown = PINK;
 
+float drawingRefreshRate = 0.05f;
+
 
 int main(void)
 {
@@ -48,6 +50,10 @@ int main(void)
         // else{
         //     DrawCircleV(ballPosition, startBallRadius, mouseDrawMode);
         // }
+
+        for (float t = 0; t < 1.0f + drawingRefreshRate; t += drawingRefreshRate){
+
+        }
     
         BeginDrawing();
 
