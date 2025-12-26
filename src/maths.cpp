@@ -10,7 +10,7 @@ const int maxBalls = 100;
 Ball balls[maxBalls]; 
 int ballNum = 0;  
 Color c = getNewColour();
-
+float startBallRadius = 10;
 
 float factorio(int number){
     if (number == 0){return 1;}

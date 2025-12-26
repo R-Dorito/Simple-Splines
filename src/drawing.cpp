@@ -14,7 +14,7 @@ Color getNewColour(){
     unsigned char r = rand() % 256;
     unsigned char g = rand() % 256;
     unsigned char b = rand() % 255;
-    return Color{r, g, b, 255}; 
+    return Color{r, g, b, 10}; 
 }
 
 Color IncreaseColorBy(Color color, int increaseAmount) {
@@ -71,4 +71,18 @@ void clearScreen(){
         };
     }
     ballNum = 0;
+}
+
+Ball* getNewBallPosition(Vector2 mouseLocation){
+    for (int i = 0; i < ballNum; i++) {
+        // Calculate the distance between the mouse and the circle's center
+        float distance = sqrt(pow(mouseLocation.x - balls[i].pos.x, 2) + pow(mouseLocation.y - balls[i].pos.y, 2));
+
+        // If the distance is less than or equal to the circle's radius, the mouse is over the circle
+        if (distance <= startBallRadius) {
+            std::cout << "ball over" << std::endl;
+            return &balls[i];
+        }
+    }
+    return nullptr;
 }

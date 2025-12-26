@@ -11,5 +11,6 @@ void drawExistingBalls();
 void clearScreen();
 Color getNewColour();
 Color IncreaseColorBy(Color color, int increaseAmount);
+Ball* getNewBallPosition(Vector2 mouseLocation);
 
 #endif

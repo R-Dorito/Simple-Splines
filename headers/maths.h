@@ -6,6 +6,7 @@
 
 extern Ball balls[]; 
 extern int ballNum;  
+extern float startBallRadius;
 
 float factorio(int number);
 float binomials(int number, int k_Value);

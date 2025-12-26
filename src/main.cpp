@@ -8,7 +8,9 @@
 
 const int screenWidth = 800;
 const int screenHeight = 600;
-float startBallRadius = 10;
+Color mouseDrawMode = LIME;
+Color mouseDown = PINK;
+
 
 int main(void)
 {
@@ -21,7 +23,7 @@ int main(void)
     {
         ballPosition = GetMousePosition();
 
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_SPACE))
         {
             balls[ballNum] = {
                 ballPosition,
@@ -34,14 +36,27 @@ int main(void)
         if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
             clearScreen();
         }
+
+        // if(IsKeyDown(KEY_SPACE)){
+        //     if(getNewBallPosition(ballPosition) == nullptr){
+        //         DrawCircleV(ballPosition, startBallRadius, mouseDown);
+        //     }
+        //     else{
+        //         DrawCircleV(ballPosition, startBallRadius, BLACK);
+        //     }
+        // }
+        // else{
+        //     DrawCircleV(ballPosition, startBallRadius, mouseDrawMode);
+        // }
     
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
             drawExistingBalls();
+            
 
             //below is the current ball location
-            DrawCircleV(ballPosition, startBallRadius, LIME);
+            
             DrawText(TextFormat("X: %.0f, Y: %.0f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
 
         EndDrawing();
