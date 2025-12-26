@@ -9,5 +9,7 @@ void drawLinearInterprolation(Vector2 p1, Vector2 p2);
 void drawBezier();
 void drawExistingBalls();
 void clearScreen();
+Color getNewColour();
+Color IncreaseColorBy(Color color, int increaseAmount);
 
 #endif
