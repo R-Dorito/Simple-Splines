@@ -37,26 +37,10 @@ int main(void)
             clearScreen();
         }
 
-        // if(IsKeyDown(KEY_SPACE)){
-        //     if(getNewBallPosition(ballPosition) == nullptr){
-        //         DrawCircleV(ballPosition, startBallRadius, mouseDown);
-        //     }
-        //     else{
-        //         DrawCircleV(ballPosition, startBallRadius, BLACK);
-        //     }
-        // }
-        // else{
-        //     DrawCircleV(ballPosition, startBallRadius, mouseDrawMode);
-        // }
-    
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
             drawExistingBalls();
-            
-
-            //below is the current ball location
-            
             DrawText(TextFormat("X: %.0f, Y: %.0f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
 
         EndDrawing();

@@ -48,6 +48,33 @@ void drawBezier(){
     }
 }
 
+void drawSpline(){
+    int degreeOfSpline = 3;
+    double knots[] = {0.0, 0.0, 0.0, 1.0, 2.0, 3.0, 3.0, 3.0}; // CAN ONLY Take in a few control points
+    Vector2 point;
+    int totalKNots = degreeOfSpline + 4 + 1; // test numbers as theres only 4 of them
+
+    Vector2 startingPoint = {balls[0].pos.x, balls[0].pos.y};
+    Vector2 previousPoint = startingPoint;
+
+    for (float t = knots[degreeOfSpline]; t <= knots[ballNum]; t += drawingRefreshRate) {
+        point = findSpline(t, ballNum, degreeOfSpline, balls, knots);
+        //point.x += startingPoint.x;
+        //point.y += startingPoint.y;
+        DrawLineEx(previousPoint, point, 5, RED); 
+        previousPoint = point;
+    }
+
+    for (int i = 0; i < ballNum; i++) {
+        if (i == 0) {
+            DrawLine(balls[ballNum-1].pos.x, balls[ballNum-1].pos.y, balls[i].pos.x, balls[i].pos.y, BLUE);
+        }
+        else {
+            DrawLine(balls[i-1].pos.x, balls[i-1].pos.y, balls[i].pos.x, balls[i].pos.y, BLUE);
+        }
+    }
+}
+
 void drawExistingBalls(){
     for (int i = 0; i < ballNum; i++)
     {
@@ -57,7 +84,8 @@ void drawExistingBalls(){
             //drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
             //DrawLineEx(balls[i-1].pos, balls[i].pos, 1, GRAY);
             drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
-            drawBezier();
+            //drawBezier();
+            drawSpline();
         }
     }
 }

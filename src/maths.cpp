@@ -68,3 +68,43 @@ Vector2 deCasteljau(float t){
     return Q[0]; // this is the single point location after reducing all the balls on the 
 }
 
+float cox_de_boor(int i, int degree_of_spline, float t, double knots[]) {
+    if (degree_of_spline == 0) {
+        if(knots[i] <= t && t < knots[i + 1]) {
+            return 1.0;
+        }
+        else{
+            return 0.0;
+        }
+    } 
+
+    double left = 0.0;
+    double right = 0.0;
+
+    if (knots[i + degree_of_spline] != knots[i]) {
+        left = (t - knots[i]) / (knots[i + degree_of_spline] - knots[i]);
+    }
+
+    if (knots[i + degree_of_spline + 1] != knots[i + 1]) {
+        right = (knots[i + degree_of_spline + 1] - t) / (knots[i + degree_of_spline + 1] - knots[i + 1]);
+    }
+
+    double leftPart = left * cox_de_boor(i, degree_of_spline - 1, t, knots);
+    double rightPart = right * cox_de_boor(i + 1, degree_of_spline - 1, t, knots);
+
+    return leftPart + rightPart;
+}
+
+Vector2 findSpline(float t, int num, int degree_of_spline, Ball balls[], double knots[]) {
+    float x = 0.0, y = 0.0;
+
+    // iterate over knot array?
+
+    for (int i = 0; i < num; i++) {
+        // Compute the B-spline basis function N_{i,k}(t) for each control point
+        float N = cox_de_boor(i, degree_of_spline, t, knots);
+        x += N * balls[i].pos.x;
+        y += N * balls[i].pos.y;
+    }
+    return {x, y};
+}
