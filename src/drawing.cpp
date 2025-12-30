@@ -48,30 +48,61 @@ void drawBezier(){
     }
 }
 
+int numMin(int numA, int numB) {
+    return numA < numB ? numA : numB;
+}
+
+int numMax(int numA, int numB) {
+    return numA > numB ? numA : numB;
+}
+
 void drawSpline(){
-    int degreeOfSpline = 3;
+    int degreeOfSpline = (numMin(ballNum + 1, 3));
     double knots[] = {0.0, 0.0, 0.0, 1.0, 2.0, 3.0, 3.0, 3.0}; // CAN ONLY Take in a few control points
-    Vector2 point;
-    int totalKNots = degreeOfSpline + 4 + 1; // test numbers as theres only 4 of them
+    Vector2 point, previousPoint;
+    int totalKNots = degreeOfSpline + ballNum + 1; // test numbers as theres only 4 of them
 
-    Vector2 startingPoint = {balls[0].pos.x, balls[0].pos.y};
-    Vector2 previousPoint = startingPoint;
+    double calculatedKnots[totalKNots];
 
-    for (float t = knots[degreeOfSpline]; t <= knots[ballNum]; t += drawingRefreshRate) {
-        point = findSpline(t, ballNum, degreeOfSpline, balls, knots);
-        //point.x += startingPoint.x;
-        //point.y += startingPoint.y;
-        DrawLineEx(previousPoint, point, 5, RED); 
-        previousPoint = point;
+    // for (int i = 0; i < totalKNots; i++) {
+    //     if (i <= degreeOfSpline) {
+    //         calculatedKnots[i] = 0;
+    //     }
+    //     else if (i >= totalKNots-degreeOfSpline) {
+    //         calculatedKnots[i] = 1;
+    //     }
+    //     else {
+    //         calculatedKnots[i] = (double) ((i - (degreeOfSpline)) / (totalKNots-degreeOfSpline*2));
+    //     }
+    // }
+
+    // Set the first (degree_of_spline + 1) knots to 0
+    for (int i = 0; i <= degreeOfSpline; ++i) {
+        calculatedKnots[i] = 0.0;
     }
 
-    for (int i = 0; i < ballNum; i++) {
-        if (i == 0) {
-            DrawLine(balls[ballNum-1].pos.x, balls[ballNum-1].pos.y, balls[i].pos.x, balls[i].pos.y, BLUE);
-        }
-        else {
-            DrawLine(balls[i-1].pos.x, balls[i-1].pos.y, balls[i].pos.x, balls[i].pos.y, BLUE);
-        }
+    // Set the last (degree_of_spline + 1) knots to 1
+    for (int i = ballNum; i < totalKNots; ++i) {
+        calculatedKnots[i] = 1.0;
+    }
+
+    // Set the intermediate knots to be evenly spaced between 0 and 1
+    for (int i = degreeOfSpline + 1; i < ballNum; ++i) {
+        calculatedKnots[i] = (double)(i - degreeOfSpline) / (ballNum - degreeOfSpline);
+    }
+
+    //knots = calculatedKnots;
+
+    Vector2 startingPoint = {balls[0].pos.x, balls[0].pos.y};
+    previousPoint = startingPoint;
+    
+    for (float t = calculatedKnots[degreeOfSpline]; t <= calculatedKnots[ballNum]; t += drawingRefreshRate) {
+        point = findSpline(t, ballNum, degreeOfSpline, balls, calculatedKnots);
+        //point.x += startingPoint.x;
+        //point.y += startingPoint.y;
+        std::cout << "point.x " << point.x << " point. y " << std::endl;
+        DrawLineEx(previousPoint, point, 5, RED); 
+        previousPoint = point;
     }
 }
 

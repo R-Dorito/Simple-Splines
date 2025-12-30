@@ -69,6 +69,9 @@ Vector2 deCasteljau(float t){
 }
 
 float cox_de_boor(int i, int degree_of_spline, float t, double knots[]) {
+    double left = 0.0;
+    double right = 0.0;
+
     if (degree_of_spline == 0) {
         if(knots[i] <= t && t < knots[i + 1]) {
             return 1.0;
@@ -77,9 +80,6 @@ float cox_de_boor(int i, int degree_of_spline, float t, double knots[]) {
             return 0.0;
         }
     } 
-
-    double left = 0.0;
-    double right = 0.0;
 
     if (knots[i + degree_of_spline] != knots[i]) {
         left = (t - knots[i]) / (knots[i + degree_of_spline] - knots[i]);
