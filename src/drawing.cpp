@@ -7,7 +7,7 @@
 #include <cmath> 
 #include <ctime> 
 
-float drawingRefreshRate = 0.05f;
+float drawingRefreshRate = 0.01f;
 
 Color getNewColour(){
     srand(static_cast<unsigned int>(time(0)));
@@ -57,26 +57,13 @@ int numMax(int numA, int numB) {
 }
 
 void drawSpline(){
-    int degreeOfSpline = (numMin(ballNum + 1, 3));
+    int degreeOfSpline = (numMin(ballNum - 1, 3));
     double knots[] = {0.0, 0.0, 0.0, 1.0, 2.0, 3.0, 3.0, 3.0}; // CAN ONLY Take in a few control points
     Vector2 point, previousPoint;
     int totalKNots = degreeOfSpline + ballNum + 1; // test numbers as theres only 4 of them
 
     double calculatedKnots[totalKNots];
 
-    // for (int i = 0; i < totalKNots; i++) {
-    //     if (i <= degreeOfSpline) {
-    //         calculatedKnots[i] = 0;
-    //     }
-    //     else if (i >= totalKNots-degreeOfSpline) {
-    //         calculatedKnots[i] = 1;
-    //     }
-    //     else {
-    //         calculatedKnots[i] = (double) ((i - (degreeOfSpline)) / (totalKNots-degreeOfSpline*2));
-    //     }
-    // }
-
-    // Set the first (degree_of_spline + 1) knots to 0
     for (int i = 0; i <= degreeOfSpline; ++i) {
         calculatedKnots[i] = 0.0;
     }
@@ -95,15 +82,29 @@ void drawSpline(){
 
     Vector2 startingPoint = {balls[0].pos.x, balls[0].pos.y};
     previousPoint = startingPoint;
-    
-    for (float t = calculatedKnots[degreeOfSpline]; t <= calculatedKnots[ballNum]; t += drawingRefreshRate) {
-        point = findSpline(t, ballNum, degreeOfSpline, balls, calculatedKnots);
+
+    float t = calculatedKnots[degreeOfSpline];
+    while (t <= calculatedKnots[ballNum]) {
+
+        double t_clamped = t > calculatedKnots[ballNum] ? calculatedKnots[ballNum] : t;
+        point = findSpline(t_clamped, ballNum, degreeOfSpline, balls, calculatedKnots);
         //point.x += startingPoint.x;
         //point.y += startingPoint.y;
         std::cout << "point.x " << point.x << " point. y " << std::endl;
         DrawLineEx(previousPoint, point, 5, RED); 
         previousPoint = point;
+
+        t += drawingRefreshRate;
     }
+    
+    // for (float t = calculatedKnots[degreeOfSpline]; t <= calculatedKnots[ballNum]; t += drawingRefreshRate) {
+    //     point = findSpline(t, ballNum, degreeOfSpline, balls, calculatedKnots);
+    //     //point.x += startingPoint.x;
+    //     //point.y += startingPoint.y;
+    //     std::cout << "point.x " << point.x << " point. y " << std::endl;
+    //     DrawLineEx(previousPoint, point, 5, RED); 
+    //     previousPoint = point;
+    // }
 }
 
 void drawExistingBalls(){
