@@ -36,7 +36,7 @@ Vector2 bernstein(float t){
     for(int i = 0; i < ballNum; i++){
         resultX += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * balls[i].pos.x;
         resultY += binomials(nt,i) * pow(t,i) * pow((1-t),(nt-i)) * balls[i].pos.y;
-        DrawLine(balls[i].pos.x, balls[i].pos.y, resultX, resultY, PINK);
+        //DrawLine(balls[i].pos.x, balls[i].pos.y, resultX, resultY, PINK);
     }
     return {resultX, resultY};
 }
@@ -61,7 +61,7 @@ Vector2 deCasteljau(float t){
             // reduce the number of itterations for each step. So reduce "i" over time
             Q[j].x = (Q[j].x * (1-t)) + (Q[j+1].x * t);
             Q[j].y = (Q[j].y * (1-t)) + (Q[j+1].y * t);
-            DrawLineEx(oldPoint, Q[j+1], 2, c);
+            //DrawLineEx(oldPoint, Q[j+1], 2, c);
         }
     }
 

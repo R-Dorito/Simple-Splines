@@ -36,14 +36,15 @@ void drawLinearInterprolation(Vector2 p1, Vector2 p2){
     }
 }
 
-void drawBezier(){
+void drawBezier(int lineThickness, Color c){
     Vector2 point = {0,0};
     Vector2 previousPoint = {balls[0].pos.x, balls[0].pos.y};
     
-    for (float t = 0; t < 1.0f + drawingRefreshRate; t += drawingRefreshRate){
-        //point = bernstein(balls, ballCount, t);
+    for (float t = 0; t < 1.0f; t += drawingRefreshRate){
+
         point = deCasteljau(t);
-        DrawLineEx(previousPoint, point, 5, RED); 
+
+        DrawLineEx(previousPoint, point, lineThickness, c); 
         previousPoint = point;
     }
 }
@@ -56,9 +57,9 @@ int numMax(int numA, int numB) {
     return numA > numB ? numA : numB;
 }
 
-void drawSpline(){
+void drawSpline_deBoor(int lineThickness, Color c){
     int degreeOfSpline = (numMin(ballNum - 1, 3));
-    double knots[] = {0.0, 0.0, 0.0, 1.0, 2.0, 3.0, 3.0, 3.0}; // CAN ONLY Take in a few control points
+    //double knots[] = {0.0, 0.0, 0.0, 1.0, 2.0, 3.0, 3.0, 3.0}; // CAN ONLY Take in a few control points
     Vector2 point, previousPoint;
     int totalKNots = degreeOfSpline + ballNum + 1; // test numbers as theres only 4 of them
 
@@ -91,7 +92,7 @@ void drawSpline(){
         //point.x += startingPoint.x;
         //point.y += startingPoint.y;
         std::cout << "point.x " << point.x << " point. y " << std::endl;
-        DrawLineEx(previousPoint, point, 5, RED); 
+        DrawLineEx(previousPoint, point, lineThickness, c); 
         previousPoint = point;
 
         t += drawingRefreshRate;
@@ -116,8 +117,9 @@ void drawExistingBalls(){
             //drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
             //DrawLineEx(balls[i-1].pos, balls[i].pos, 1, GRAY);
             drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
-            //drawBezier();
-            drawSpline();
+            
+            drawBezier(3, ORANGE);
+            drawSpline_deBoor(2, DARKBLUE);
         }
     }
 }
