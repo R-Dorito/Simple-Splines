@@ -30,6 +30,12 @@ void clearScreen(){
     ballNum = 0;
 }
 
+void decreaseSpline(){
+    if(degreeOfSpline > 1){
+        degreeOfSpline--;
+    }
+}
+
 int main(void)
 {
     InitWindow(screenWidth, screenHeight, "I love them curvy");
@@ -57,9 +63,7 @@ int main(void)
             }
         }
         if(IsKeyReleased(KEY_S)){
-            if(degreeOfSpline > 1){
-                degreeOfSpline--;
-            }
+
         }
         if(IsKeyReleased(KEY_Z)){
             if(ballNum > 0){
