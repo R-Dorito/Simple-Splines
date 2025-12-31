@@ -57,8 +57,13 @@ int numMax(int numA, int numB) {
     return numA > numB ? numA : numB;
 }
 
+int findDegreeOfSpline(){
+    int degree = 0;
+    return degree;
+}
+
 void drawSpline_deBoor(int lineThickness, Color c){
-    int degreeOfSpline = (numMin(ballNum - 1, 3));
+    int degreeOfSpline = numMin(ballNum - 1, 3);
     //double knots[] = {0.0, 0.0, 0.0, 1.0, 2.0, 3.0, 3.0, 3.0}; // CAN ONLY Take in a few control points
     Vector2 point, previousPoint;
     int totalKNots = degreeOfSpline + ballNum + 1; // test numbers as theres only 4 of them

@@ -42,6 +42,7 @@ int main(void)
             ClearBackground(RAYWHITE);
             drawExistingBalls();
             DrawText(TextFormat("X: %.0f, Y: %.0f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
+            DrawText(TextFormat("BallNum: %d", ballNum), 0,15,5, BLACK);
 
         EndDrawing();
     }
