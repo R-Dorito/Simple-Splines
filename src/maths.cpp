@@ -2,15 +2,10 @@
 #include "../headers/maths.h"
 #include "../headers/balls.h"
 #include "../headers/drawing.h"
+#include "../headers/globals.h"
 
 #include <iostream>
 #include <cmath> 
-
-const int maxBalls = 100;
-Ball balls[maxBalls]; 
-int ballNum = 0;  
-Color c = getNewColour();
-float startBallRadius = 10;
 
 float factorio(int number){
     if (number == 0){return 1;}
@@ -41,10 +36,6 @@ Vector2 bernstein(float t){
     return {resultX, resultY};
 }
 
-// float homeMadeLarp (float val1, float val2, float t){
-//     return val1 * (1-t) + val2 * t;
-// }
-
 Vector2 deCasteljau(float t){
 
     Vector2 Q[ballNum];
@@ -68,11 +59,11 @@ Vector2 deCasteljau(float t){
     return Q[0]; // this is the single point location after reducing all the balls on the 
 }
 
-float cox_de_boor(int i, int degree_of_spline, float t, double knots[]) {
+float cox_de_boor(int i, int degreeOfSpline, float t, double knots[]) {
     double left = 0.0;
     double right = 0.0;
 
-    if (degree_of_spline == 0) {
+    if (degreeOfSpline == 0) {
         if(knots[i] <= t && t < knots[i + 1]) {
             return 1.0;
         }
@@ -81,28 +72,28 @@ float cox_de_boor(int i, int degree_of_spline, float t, double knots[]) {
         }
     } 
 
-    if (knots[i + degree_of_spline] != knots[i]) {
-        left = (t - knots[i]) / (knots[i + degree_of_spline] - knots[i]);
+    if (knots[i + degreeOfSpline] != knots[i]) {
+        left = (t - knots[i]) / (knots[i + degreeOfSpline] - knots[i]);
     }
 
-    if (knots[i + degree_of_spline + 1] != knots[i + 1]) {
-        right = (knots[i + degree_of_spline + 1] - t) / (knots[i + degree_of_spline + 1] - knots[i + 1]);
+    if (knots[i + degreeOfSpline + 1] != knots[i + 1]) {
+        right = (knots[i + degreeOfSpline + 1] - t) / (knots[i + degreeOfSpline + 1] - knots[i + 1]);
     }
 
-    double leftPart = left * cox_de_boor(i, degree_of_spline - 1, t, knots);
-    double rightPart = right * cox_de_boor(i + 1, degree_of_spline - 1, t, knots);
+    double leftPart = left * cox_de_boor(i, degreeOfSpline - 1, t, knots);
+    double rightPart = right * cox_de_boor(i + 1, degreeOfSpline - 1, t, knots);
 
     return leftPart + rightPart;
 }
 
-Vector2 findSpline(float t, int num, int degree_of_spline, Ball balls[], double knots[]) {
+Vector2 cox_de_boor_to_vectors(float t, int degreeOfSpline, double knots[]) {
     float x = 0.0, y = 0.0;
 
     // iterate over knot array?
 
-    for (int i = 0; i < num; i++) {
+    for (int i = 0; i < ballNum; i++) {
         // Compute the B-spline basis function N_{i,k}(t) for each control point
-        float N = cox_de_boor(i, degree_of_spline, t, knots);
+        float N = cox_de_boor(i, degreeOfSpline, t, knots);
         x += N * balls[i].pos.x;
         y += N * balls[i].pos.y;
     }
