@@ -10,7 +10,7 @@
 
 float drawingRefreshRate = 0.01f;
 
-void drawLinearInterprolation(Vector2 p1, Vector2 p2){
+void drawGuideLines(Vector2 p1, Vector2 p2){
     //float pointY;
     for (float i = 0; i < 1; i += 0.01f)
     {
@@ -46,7 +46,7 @@ void drawSpline_deBoor(int degree, int lineThickness, Color c){
     //double knots[] = {0.0, 0.0, 0.0, 1.0, 2.0, 3.0, 3.0, 3.0}; // CAN ONLY Take in a few control points
    
     Vector2 point, previousPoint;
-    int totalKNots = degreeOfSpline + ballNum + 1; // test numbers as theres only 4 of them
+    int totalKNots = degreeOfSpline + ballNum + 1;
 
     double calculatedKnots[totalKNots];
 
@@ -62,33 +62,25 @@ void drawSpline_deBoor(int degree, int lineThickness, Color c){
         calculatedKnots[i] = (double)(i - degreeOfSpline) / (ballNum - degreeOfSpline);
     }
 
-    //knots = calculatedKnots;
-
     Vector2 startingPoint = {balls[0].pos.x, balls[0].pos.y};
     previousPoint = startingPoint;
 
     float t = calculatedKnots[degreeOfSpline];
-    while (t <= calculatedKnots[ballNum]) {
 
+    // Draw knot locations on the spline
+    for (int i = degreeOfSpline; i < ballNum; i++) {
+        point = cox_de_boor_to_vectors(calculatedKnots[i], degreeOfSpline, calculatedKnots);
+        DrawCircleV(point, 5.0f, RED);
+    }
+
+    while (t <= calculatedKnots[ballNum]) {
         double t_clamped = t > calculatedKnots[ballNum] ? calculatedKnots[ballNum] : t;
         point = cox_de_boor_to_vectors(t_clamped, degreeOfSpline, calculatedKnots);
-        //point.x += startingPoint.x;
-        //point.y += startingPoint.y;
-        std::cout << "point.x " << point.x << " point. y " << std::endl;
         DrawLineEx(previousPoint, point, lineThickness, c); 
         previousPoint = point;
 
         t += drawingRefreshRate;
     }
-    
-    // for (float t = calculatedKnots[degreeOfSpline]; t <= calculatedKnots[ballNum]; t += drawingRefreshRate) {
-    //     point = findSpline(t, ballNum, degreeOfSpline, balls, calculatedKnots);
-    //     //point.x += startingPoint.x;
-    //     //point.y += startingPoint.y;
-    //     std::cout << "point.https://dev.cog.ooo/bspline/x " << point.x << " point. y " << std::endl;
-    //     DrawLineEx(previousPoint, point, 5, RED); 
-    //     previousPoint = point;
-    // }
 }
 
 void drawExistingBalls(int degree){
@@ -97,26 +89,12 @@ void drawExistingBalls(int degree){
         DrawText(TextFormat("X: %i, Y: %i",(int)balls[i].pos.x, (int)balls[i].pos.y), balls[i].pos.x - 30, balls[i].pos.y - 20,5, RED);
         DrawCircleV(balls[i].pos, balls[i].radius, balls[i].colour);
         if(i > 0){
-            //drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
+            //drawGuideLines(balls[i-1].pos, balls[i].pos);
             //DrawLineEx(balls[i-1].pos, balls[i].pos, 1, GRAY);
-            drawLinearInterprolation(balls[i-1].pos, balls[i].pos);
+            drawGuideLines(balls[i-1].pos, balls[i].pos);
             
             drawBezier(3, ORANGE);
             drawSpline_deBoor(degree, 2, DARKBLUE);
         }
     }
-}
-
-Ball* getNewBallPosition(Vector2 mouseLocation){
-    for (int i = 0; i < ballNum; i++) {
-        // Calculate the distance between the mouse and the circle's center
-        float distance = sqrt(pow(mouseLocation.x - balls[i].pos.x, 2) + pow(mouseLocation.y - balls[i].pos.y, 2));
-
-        // If the distance is less than or equal to the circle's radius, the mouse is over the circle
-        if (distance <= startBallRadius) {
-            std::cout << "ball over" << std::endl;
-            return &balls[i];
-        }
-    }
-    return nullptr;
 }

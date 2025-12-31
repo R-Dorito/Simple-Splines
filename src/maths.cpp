@@ -41,15 +41,15 @@ Vector2 deCasteljau(float t){
     Vector2 Q[ballNum];
     Vector2 oldPoint;
 
+    // I dont want to edit the balls array
     for (int i = 0; i < ballNum; i++) {
-        Q[i] = balls[i].pos; // P for point.
+        Q[i] = balls[i].pos; 
     } 
 
     for(int i = 0; i < ballNum - 1; i++){ 
         // dont forget to check the "- 1", if the point starts at 0,0 or it's flying off somewhere, it's likely a -1 problem
         for(int j = 0; j < ballNum - i - 1; j++){ 
             oldPoint = Q[j];
-            // reduce the number of itterations for each step. So reduce "i" over time
             Q[j].x = (Q[j].x * (1-t)) + (Q[j+1].x * t);
             Q[j].y = (Q[j].y * (1-t)) + (Q[j+1].y * t);
             //DrawLineEx(oldPoint, Q[j+1], 2, c);
@@ -87,10 +87,7 @@ float cox_de_boor(int i, int degreeOfSpline, float t, double knots[]) {
 }
 
 Vector2 cox_de_boor_to_vectors(float t, int degreeOfSpline, double knots[]) {
-    float x = 0.0, y = 0.0;
-
-    // iterate over knot array?
-
+    float x = 0.0f, y = 0.0f;
     for (int i = 0; i < ballNum; i++) {
         // Compute the B-spline basis function N_{i,k}(t) for each control point
         float N = cox_de_boor(i, degreeOfSpline, t, knots);
