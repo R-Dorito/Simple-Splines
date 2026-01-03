@@ -70,7 +70,7 @@ void drawSpline_deBoor(int degree, int lineThickness, Color c){
     // Draw knot locations on the spline
     for (int i = degreeOfSpline; i < ballNum; i++) {
         point = cox_de_boor_to_vectors(calculatedKnots[i], degreeOfSpline, calculatedKnots);
-        DrawCircleV(point, 5.0f, RED);
+        DrawCircleV(point, 5.0f, PURPLE);
     }
 
     while (t <= calculatedKnots[ballNum]) {
@@ -83,11 +83,22 @@ void drawSpline_deBoor(int degree, int lineThickness, Color c){
     }
 }
 
-void drawExistingBalls(int degree){
+void drawExistingBalls(int degree, Vector2 mouseLocation){
     for (int i = 0; i < ballNum; i++)
     {
         DrawText(TextFormat("X: %i, Y: %i",(int)balls[i].pos.x, (int)balls[i].pos.y), balls[i].pos.x - 30, balls[i].pos.y - 20,5, RED);
+
+        if(CheckCollisionPointCircle(mouseLocation, balls[i].pos, balls[i].radius)){
+            DrawCircleLines(
+                balls[i].pos.x,
+                balls[i].pos.y,
+                balls[i].radius + 2.0f,
+                RED
+            );
+        }
+        
         DrawCircleV(balls[i].pos, balls[i].radius, balls[i].colour);
+        
         if(i > 0){
             //drawGuideLines(balls[i-1].pos, balls[i].pos);
             //DrawLineEx(balls[i-1].pos, balls[i].pos, 1, GRAY);
@@ -96,18 +107,8 @@ void drawExistingBalls(int degree){
             drawBezier(3, ORANGE);
             drawSpline_deBoor(degree, 2, DARKBLUE);
         }
-    }
-}
 
-int getNewBallPosition(Vector2 mouseLocation){
-    for (int i = 0; i < ballNum; i++) {
-        // Calculate the distance between the mouse and the circle's center
-        float distance = sqrt(pow(mouseLocation.x - balls[i].pos.x, 2) + pow(mouseLocation.y - balls[i].pos.y, 2));
-        // If the distance is less than or equal to the circle's radius, the mouse is over the circle
-        if (distance <= startBallRadius) {
-            std::cout << "ball over" << std::endl;
-            return i;
-        }
+
+
     }
-    return ballNum + 1;
 }

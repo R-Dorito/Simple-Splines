@@ -11,39 +11,59 @@
 const int maxBalls = 100;
 Ball balls[maxBalls]; 
 int ballNum = 0;  
-float startBallRadius = 10;
+float startBallRadius = 10.0f;
 //-------
 
 const int screenWidth = 800;
 const int screenHeight = 600;
 
 int degreeOfSpline = 1;
-bool selectionMode = false;
+
+int isOver = -1;
 
 int main(void)
 {
     InitWindow(screenWidth, screenHeight, "I love them curvy");
     SetTargetFPS(60);    
 
-    Vector2 ballPosition = {0,0};
+    Vector2 mouseLocation = {0,0};
 
     while (!WindowShouldClose())   
     {
-        ballPosition = GetMousePosition();
-
-        if(IsKeyPressed(KEY_SPACE)){
-            selectionMode = !selectionMode;
-        }
+        mouseLocation = GetMousePosition();
 
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            balls[ballNum] = {
-                ballPosition,
-                startBallRadius,
-                BLUE
-            };
-            ballNum++;
+            isOver = -1;
+
+            for (int i = ballNum - 1; i >= 0; i--)
+            {
+                if (CheckCollisionPointCircle(mouseLocation, balls[i].pos, balls[i].radius))
+                {
+                    isOver = i;
+                    break;
+                }
+            }
+
+            if (isOver == -1 && ballNum < maxBalls)
+            {
+                balls[ballNum++] = {
+                    mouseLocation,
+                    startBallRadius,
+                    BLUE
+                };
+            }
         }    
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && isOver != -1)
+        {
+            balls[isOver].pos = mouseLocation;
+        }
+
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            isOver = -1;
+        }
+
         if(IsKeyReleased(KEY_W)){
             if(degreeOfSpline < ballNum - 1){
                 degreeOfSpline++;
@@ -62,19 +82,11 @@ int main(void)
                     (Color){0, 0, 0, 255}
                 };
 
-                //fix this later
-                if(degreeOfSpline > 1){
-                    std::cout << "deg of spline function being hit. deg: "<< degreeOfSpline << " balls " <<  ballNum << std::endl;                    
-                    if(ballNum - 1 == degreeOfSpline){
-                        std::cout << "if(ballNum == degreeOfSpline + 1) being hit" << std::endl;
-                        degreeOfSpline--;
-                    }
-                    else if(ballNum - 1  > degreeOfSpline +1){
-                        std::cout << "Else statment being hit" << std::endl;
-                    }
-                }
-                
-                ballNum--;
+            if(degreeOfSpline > 1 && ballNum - 1 == degreeOfSpline){
+                degreeOfSpline--;
+            }
+
+            ballNum--;
             }
         }
 
@@ -93,13 +105,11 @@ int main(void)
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
-            drawExistingBalls(degreeOfSpline);
-            DrawText(TextFormat("X: %.0f, Y: %.0f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
+
+            drawExistingBalls(degreeOfSpline, mouseLocation);
+            DrawText(TextFormat("X: %.0f, Y: %.0f",mouseLocation.x, mouseLocation.y), 0,0,5, BLACK);
             DrawText(TextFormat("BallNum: %d", ballNum), 0,15,5, BLACK);
             DrawText(TextFormat("Degree: %d", degreeOfSpline), 0,25,5, BLACK);
-            if(selectionMode){
-                DrawText(TextFormat("Selection Mode"), screenWidth/2 - 75, 20, 20, RED);
-            }
 
         EndDrawing();
     }
