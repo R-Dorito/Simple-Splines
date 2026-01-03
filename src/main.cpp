@@ -18,23 +18,7 @@ const int screenWidth = 800;
 const int screenHeight = 600;
 
 int degreeOfSpline = 1;
-
-void clearScreen(){
-    for (int i = 0; i < ballNum-1; i++) {
-        balls[i] = {
-            {0,0},
-            0.0f,
-            (Color){0, 0, 0, 255}
-        };
-    }
-    ballNum = 0;
-}
-
-void decreaseSpline(){
-    if(degreeOfSpline > 1){
-        degreeOfSpline--;
-    }
-}
+bool selectionMode = false;
 
 int main(void)
 {
@@ -47,7 +31,11 @@ int main(void)
     {
         ballPosition = GetMousePosition();
 
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_SPACE))
+        if(IsKeyPressed(KEY_SPACE)){
+            selectionMode = !selectionMode;
+        }
+
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             balls[ballNum] = {
                 ballPosition,
@@ -56,14 +44,15 @@ int main(void)
             };
             ballNum++;
         }    
-
         if(IsKeyReleased(KEY_W)){
             if(degreeOfSpline < ballNum - 1){
                 degreeOfSpline++;
             }
         }
         if(IsKeyReleased(KEY_S)){
-
+            if(degreeOfSpline > 1){
+                degreeOfSpline--;
+            }
         }
         if(IsKeyReleased(KEY_Z)){
             if(ballNum > 0){
@@ -73,14 +62,24 @@ int main(void)
                     (Color){0, 0, 0, 255}
                 };
                 ballNum--;
-                if(degreeOfSpline > ballNum && degreeOfSpline > 1){
+
+                //fix this later
+                if(degreeOfSpline +1 < ballNum && degreeOfSpline > 1){
                     degreeOfSpline--;
                 }
+               
             }
         }
 
         if(IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
-            clearScreen();
+            for (int i = 0; i < ballNum-1; i++) {
+                balls[i] = {
+                    {0,0},
+                    0.0f,
+                    (Color){0, 0, 0, 255}
+                };
+            }
+            ballNum = 0;
             degreeOfSpline = 1;
         }
 
@@ -91,6 +90,9 @@ int main(void)
             DrawText(TextFormat("X: %.0f, Y: %.0f",ballPosition.x, ballPosition.y), 0,0,5, BLACK);
             DrawText(TextFormat("BallNum: %d", ballNum), 0,15,5, BLACK);
             DrawText(TextFormat("Degree: %d", degreeOfSpline), 0,25,5, BLACK);
+            if(selectionMode){
+                DrawText(TextFormat("Selection Mode"), screenWidth/2 - 75, 20, 20, RED);
+            }
 
         EndDrawing();
     }
