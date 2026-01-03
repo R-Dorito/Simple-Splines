@@ -61,13 +61,20 @@ int main(void)
                     0.0f,
                     (Color){0, 0, 0, 255}
                 };
-                ballNum--;
 
                 //fix this later
-                if(degreeOfSpline +1 < ballNum && degreeOfSpline > 1){
-                    degreeOfSpline--;
+                if(degreeOfSpline > 1){
+                    std::cout << "deg of spline function being hit. deg: "<< degreeOfSpline << " balls " <<  ballNum << std::endl;                    
+                    if(ballNum - 1 == degreeOfSpline){
+                        std::cout << "if(ballNum == degreeOfSpline + 1) being hit" << std::endl;
+                        degreeOfSpline--;
+                    }
+                    else if(ballNum - 1  > degreeOfSpline +1){
+                        std::cout << "Else statment being hit" << std::endl;
+                    }
                 }
-               
+                
+                ballNum--;
             }
         }
 
