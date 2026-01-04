@@ -1,8 +1,8 @@
 #include "raylib.h" 
 #include "globals.h"
 
-#ifndef MATHS_H
-#define MATHS_H
+#ifndef MATHS2D_H
+#define MATHS2D_H
 
 float factorio(int number);
 float binomials(int number, int k_Value);

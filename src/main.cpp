@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include "../headers/maths.h"
+#include "../headers/maths-2D.h"
 #include "../headers/balls.h"
 #include "../headers/drawing.h"
 #include "../headers/globals.h"

@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include "../headers/maths.h"
+#include "../headers/maths-2D.h"
 #include "../headers/balls.h"
 #include "../headers/globals.h"
 
@@ -33,13 +33,13 @@ void drawBezier(int lineThickness, Color c){
     }
 }
 
-int numMin(int numA, int numB) {
-    return numA < numB ? numA : numB;
-}
+// int numMin(int numA, int numB) {
+//     return numA < numB ? numA : numB;
+// }
 
-int numMax(int numA, int numB) {
-    return numA > numB ? numA : numB;
-}
+// int numMax(int numA, int numB) {
+//     return numA > numB ? numA : numB;
+// }
 
 void drawSpline_deBoor(int degree, int lineThickness, Color c){
     int degreeOfSpline = degree;//numMin(ballNum - 1, 3);
