@@ -60,6 +60,8 @@ Vector2 deCasteljau(float t){
 }
 
 float cox_de_boor(int i, int degreeOfSpline, float t, double knots[]) {
+
+   //from Wiki B_{i,p}(x):={\frac {x-t_{i}}{t_{i+p}-t_{i}}}B_{i,p-1}(x)+{\frac {t_{i+p+1}-x}{t_{i+p+1}-t_{i+1}}}B_{i+1,p-1}(x).
     double left = 0.0;
     double right = 0.0;
 
@@ -96,3 +98,4 @@ Vector2 cox_de_boor_to_vectors(float t, int degreeOfSpline, double knots[]) {
     }
     return {x, y};
 }
+
