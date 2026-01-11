@@ -8,5 +8,5 @@
 
 void drawGuideLines(Vector2 p1, Vector2 p2);
 void drawBezier();
-void drawExistingBalls(int degree, Vector2 mouseLocation);
+void drawExistingBalls_2D(int degree, Vector2 mouseLocation);
 #endif

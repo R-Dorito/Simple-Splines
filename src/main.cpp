@@ -10,6 +10,7 @@
 //---global variables---
 const int maxBalls = 100;
 Ball balls[maxBalls]; 
+Ball_3D balls_3d[maxBalls]; 
 int ballNum = 0;  
 float startBallRadius = 10.0f;
 //-------
@@ -106,7 +107,7 @@ int main(void)
 
             ClearBackground(RAYWHITE);
 
-            drawExistingBalls(degreeOfSpline, mouseLocation);
+            drawExistingBalls_2D(degreeOfSpline, mouseLocation);
             DrawText(TextFormat("X: %.0f, Y: %.0f",mouseLocation.x, mouseLocation.y), 0,0,5, BLACK);
             DrawText(TextFormat("BallNum: %d", ballNum), 0,15,5, BLACK);
             DrawText(TextFormat("Degree: %d", degreeOfSpline), 0,25,5, BLACK);

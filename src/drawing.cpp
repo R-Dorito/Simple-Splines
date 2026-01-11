@@ -83,7 +83,7 @@ void drawSpline_deBoor(int degree, int lineThickness, Color c){
     }
 }
 
-void drawExistingBalls(int degree, Vector2 mouseLocation){
+void drawExistingBalls_2D(int degree, Vector2 mouseLocation){
     for (int i = 0; i < ballNum; i++)
     {
         DrawText(TextFormat("X: %i, Y: %i",(int)balls[i].pos.x, (int)balls[i].pos.y), balls[i].pos.x - 30, balls[i].pos.y - 20,5, RED);
@@ -107,8 +107,5 @@ void drawExistingBalls(int degree, Vector2 mouseLocation){
             drawBezier(3, ORANGE);
             drawSpline_deBoor(degree, 2, DARKBLUE);
         }
-
-
-
     }
 }
