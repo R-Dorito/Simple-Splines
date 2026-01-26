@@ -35,7 +35,7 @@ Using the above equation, I can then determine the location of the curve's x and
 <p>The algorithm with take all values of the control point and using linear interpolation, determine a single point on the curve.</p>
 
 <h2>Splines</h2>
-<h2>Cox de Boor</h2>
+<h3>Cox de Boor</h>
 <p>Splines are a different sort of curve. It is different to the normal Bezier curves as the control points of a curve does not alter the full curve drawing path. Instead, a single point can be moved around and altered wihtout affecting the full curve's position. Within the Spline calculation, I had used Cox de Boor's algorithm to determine the position of the curves.</p>
 <p>  Cox de Boor's algorithm is given as follows:</p>
 <p>
@@ -59,4 +59,4 @@ $$
 
 <h2>Visuals</h2>
 <p>Explaining all that is hard, heres some videos of the program running.</p>
-[Watch video](path/to/video.mp4)
+![Demo]
