@@ -35,11 +35,28 @@ Using the above equation, I can then determine the location of the curve's x and
 <p>The algorithm with take all values of the control point and using linear interpolation, determine a single point on the curve.</p>
 
 <h2>Splines</h2>
+<h2>Cox de Boor</h2>
 <p>Splines are a different sort of curve. It is different to the normal Bezier curves as the control points of a curve does not alter the full curve drawing path. Instead, a single point can be moved around and altered wihtout affecting the full curve's position. Within the Spline calculation, I had used Cox de Boor's algorithm to determine the position of the curves.</p>
+<p>  Cox de Boor's algorithm is given as follows:</p>
 <p>
-  Cox de Boors algorithm is given as follows:
-  $$
-  B_{i,0}(t) = 1 if t_i <= t < t_{i+1}, else 0
-  $$
+$$     
+B_{i,0}(t) :=
+\left\{
+  \begin{array}{ll}
+    1 & \text{if } t_i &le; x < t_{i+1} \\
+    0 & \text{otherwise }
+  \end{array}
+\right.
+$$
+$$
+B_{i,p}(t) = \frac{x - t_i}{t_{i+p} - t_i} \, B_{i,p-1}(x) 
+           + \frac{t_{i+p+1} - x}{t_{i+p+1} - t_{i+1}} \, B_{i+1,p-1}(x)
+$$
 </p>
-<p>Compared to Bezier curves, Splines are much more complex to calculate numarically as we introduce new concepts like knots and the degree of spline. Each spline curve comes with different settings, it can be clamped at both sides, like what I have done within this program, or it can begin where it naturally would start, somewhere in between the two points. I wanted mine to clamp down in between the first and last control points however, the knot vectors (which is used to calculate the location of the spline) changes based on the number of knots you have in the spline. This could be solved by creating a formular to update the knots vector whenever there is a new control point in the drawing.</p>
+<p>Where x is the iterator over the line segment between two balls, $$t_i$$ and $$t_{i+1}$$ are the knots (which can be either 0, 1, or a number in between both of these.</p>
+<p>Compared to Bezier curves, Splines are much more complex to calculate numarically as we introduce new concepts like knots and the degree of spline. Each spline curve comes with different settings, it can be clamped at both sides, like what I have done within this program, or it can begin where it naturally would start, somewhere in between the two points. </p>
+<p>I wanted mine to clamp down in between the first and last control points however, the knot vectors (which is used to calculate the location of the spline) changes based on the number of knots you have in the spline. This could be solved by creating a formular to update the knots vector whenever there is a new control point in the drawing.</p>
+
+<h2>Visuals</h2>
+<p>Explaining all that is hard, heres some videos of the program running.</p>
+[Watch video](path/to/video.mp4)
