@@ -40,6 +40,7 @@ Using the above equation, I can then determine the location of the curve's x and
 <p>Cox de Boor's algorithm is given as follows:</p>
 
 <img width="612" height="150" alt="image" src="https://github.com/user-attachments/assets/c508443c-7678-40d2-a56a-0c3524a7f1c4" />
+<br/>
 <figcaption>Image taken from https://en.wikipedia.org/wiki/De_Boor%27s_algorithm on 2026/01/28 11:07am</figcaption>
 
 <p>Where x is the iterator over the line segment between two balls, $$t_i$$ and $$t_{i+1}$$ are the knots (which can be either 0, 1, or a number in between both of these.</p>
