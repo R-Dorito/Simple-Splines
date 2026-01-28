@@ -39,18 +39,8 @@ Using the above equation, I can then determine the location of the curve's x and
 <p>Splines are a different sort of curve. It is different to the normal Bezier curves as the control points of a curve does not alter the full curve drawing path. Instead, a single point can be moved around and altered wihtout affecting the full curve's position. Within the Spline calculation, I had used Cox de Boor's algorithm to determine the position of the curves.</p>
 <p>Cox de Boor's algorithm is given as follows:</p>
 
-$$
-B_{i,0}(t) :=
-\begin{cases} 
-1 & \text{if } t_i \le x < t_{i+1} \\
-0 & \text{otherwise}
-\end{cases}
-$$
-
-$$
-B_{i,p}(t) = \frac{x - t_i}{t_{i+p} - t_i} \, B_{i,p-1}(x) 
-           + \frac{t_{i+p+1} - x}{t_{i+p+1} - t_{i+1}} \, B_{i+1,p-1}(x)
-$$
+<img width="612" height="150" alt="image" src="https://github.com/user-attachments/assets/c508443c-7678-40d2-a56a-0c3524a7f1c4" />
+<figcaption>Image taken from https://en.wikipedia.org/wiki/De_Boor%27s_algorithm on 2026/01/28 11:07am</figcaption>
 
 <p>Where x is the iterator over the line segment between two balls, $$t_i$$ and $$t_{i+1}$$ are the knots (which can be either 0, 1, or a number in between both of these.</p>
 <p>Compared to Bezier curves, Splines are much more complex to calculate numarically as we introduce new concepts like knots and the degree of spline. Each spline curve comes with different settings, it can be clamped at both sides, like what I have done within this program, or it can begin where it naturally would start, somewhere in between the two points. </p>
