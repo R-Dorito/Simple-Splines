@@ -48,5 +48,21 @@ Using the above equation, I can then determine the location of the curve's x and
 <p>I wanted mine to clamp down in between the first and last control points however, the knot vectors (which is used to calculate the location of the spline) changes based on the number of knots you have in the spline. This could be solved by creating a formular to update the knots vector whenever there is a new control point in the drawing.</p>
 
 <h2>Visuals</h2>
-<p>Explaining all that is hard, heres some videos of the program running.</p>
-![Demo]
+<p>Explaining all that is hard, heres some gifs of the program running.</p>
+<img width="600" src="https://github.com/R-Dorito/Simple-Splines/blob/main/VIdeo/1SplinePLacement.gif"/>
+<figcaption>Splines are able to be created</figcaption>
+
+<img src="https://github.com/R-Dorito/Simple-Splines/blob/main/VIdeo/2AdjustSplineDegree.gif"/>
+<figcaption>The spline's degree is able to be adjusted using W and S</figcaption>
+
+<img src="https://github.com/R-Dorito/Simple-Splines/blob/main/VIdeo/3AdjustControlPoints.gif"/>
+<figcaption>Each control point is controllable</figcaption>
+
+<img src="https://github.com/R-Dorito/Simple-Splines/blob/main/VIdeo/SPlineDelete.gif"/>
+<figcaption>Using only z keypress, you can delete the last edited spline location</figcaption>
+
+<img src="https://github.com/R-Dorito/Simple-Splines/blob/main/VIdeo/SplineFullMOvements.gif"/>
+<figcaption>Splines in full actiion</figcaption>
+
+<h2>WHat's next? What could be better?</h2>
+<p>I would like to make a spline register list, where if I delete the control point, I should be able to undo the delete and restore the spline in its original position. Also saving the current positions of the splines as well as their degree should be included and isnt too hard to make. I'll add that when I am working on this again.</p>
