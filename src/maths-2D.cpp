@@ -56,7 +56,7 @@ Vector2 deCasteljau(float t){
         }
     }
 
-    return Q[0]; // this is the single point location after reducing all the balls on the 
+    return Q[0]; // this is the single point location after reducing all the balls points 
 }
 
 float cox_de_boor(int i, int degreeOfSpline, float t, double knots[]) {
